@@ -131,8 +131,8 @@ def index():
         error_message = f"一覧の取得中にエラーが発生しました: {e}"
 
     return Response(
-        render_template_string(
-            PAGE_HTML,
+        render_template(
+            "index.html",
             recipes=recipes,
             error_message=error_message,
             success_message=success_message,
