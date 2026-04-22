@@ -8,78 +8,80 @@
 </head>
 <body>
     <div class="wrap">
-        <div class="card">
-            <h1>レシピ投稿ミニアプリ</h1>
-            <p>「タイトル」「所要分数」「説明」を入力して投稿すると、一覧の先頭に表示されます。</p>
+        {% if startup_error_message %}
+        <div class="error-box">{{ startup_error_message }}</div>
+        {% endif %}
 
-            {% if startup_error_message %}
-            <div class="error-box">{{ startup_error_message }}</div>
-            {% endif %}
+        {% if success_message %}
+        <div class="success-box">{{ success_message }}</div>
+        {% endif %}
 
-            {% if success_message %}
-            <div class="success-box">{{ success_message }}</div>
-            {% endif %}
+        {% if error_message %}
+        <div class="error-box">{{ error_message }}</div>
+        {% endif %}
 
-            {% if error_message %}
-            <div class="error-box">{{ error_message }}</div>
-            {% endif %}
+        <div class="layout">
+            <div class="card form-card">
+                <h1>レシピ投稿ミニアプリ</h1>
+                <p>「タイトル」「所要分数」「説明」を入力して投稿すると、右側の一覧に表示されます。</p>
 
-            <form method="post" action="/">
-                <div class="field">
-                    <label for="title">タイトル（必須）</label>
-                    <input
-                        id="title"
-                        name="title"
-                        type="text"
-                        maxlength="200"
-                        value="{{ form_data.title }}"
-                        placeholder="例: カレーライス"
-                    >
-                </div>
-
-                <div class="field">
-                    <label for="minutes">所要分数（必須・整数・1以上）</label>
-                    <input
-                        id="minutes"
-                        name="minutes"
-                        type="number"
-                        min="1"
-                        step="1"
-                        value="{{ form_data.minutes }}"
-                        placeholder="例: 30"
-                    >
-                </div>
-
-                <div class="field">
-                    <label for="description">説明（任意）</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        placeholder="例: 野菜を切って炒めて煮込みます。"
-                    >{{ form_data.description }}</textarea>
-                </div>
-
-                <button type="submit">投稿する</button>
-            </form>
-        </div>
-
-        <div class="card">
-            <h2>レシピ一覧（新しい順）</h2>
-
-            {% if recipes %}
-                {% for recipe in recipes %}
-                <div class="recipe">
-                    <h3>{{ recipe.title }}</h3>
-                    <div class="meta">
-                        所要分数: {{ recipe.minutes }} 分 /
-                        投稿日時(UTC): {{ recipe.created_at }}
+                <form method="post" action="/">
+                    <div class="field">
+                        <label for="title">タイトル（必須）</label>
+                        <input
+                            id="title"
+                            name="title"
+                            type="text"
+                            maxlength="200"
+                            value="{{ form_data.title }}"
+                            placeholder="例: カレーライス"
+                        >
                     </div>
-                    <div>{{ recipe.description if recipe.description else "説明なし" }}</div>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">まだレシピはありません。最初の1件を投稿してください。</p>
-            {% endif %}
+
+                    <div class="field">
+                        <label for="minutes">所要分数（必須・整数・1以上）</label>
+                        <input
+                            id="minutes"
+                            name="minutes"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="{{ form_data.minutes }}"
+                            placeholder="例: 30"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="description">説明（任意）</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="例: 野菜を切って炒めて煮込みます。"
+                        >{{ form_data.description }}</textarea>
+                    </div>
+
+                    <button type="submit">投稿する</button>
+                </form>
+            </div>
+
+            <div class="card list-card">
+                <h2>レシピ一覧（新しい順）</h2>
+
+                {% if recipes %}
+                    {% for recipe in recipes %}
+                    <div class="recipe">
+                        <h3>{{ recipe.title }}</h3>
+                        <div class="meta">
+                            所要分数: {{ recipe.minutes }} 分 /
+                            投稿日時(UTC): {{ recipe.created_at }}
+                        </div>
+                        <div>{{ recipe.description if recipe.description else "説明なし" }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">まだレシピはありません。最初の1件を投稿してください。</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>
